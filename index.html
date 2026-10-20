@@ -1,0 +1,385 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>A Minha Resposta</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,600;0,700;0,800;0,900;1,600&family=Caveat:wght@600;700&display=swap">
+<style>
+/* Layout: one centred column, three scenes shown one at a time (convite → "não" → "sim") */
+:root {
+  --bg: #FFFFFF;
+  --fg: #1E6A8D;
+  --muted: #3F6A80;
+  --soft: #A9C7D6;
+  --track: #E3EEF3;
+  --grave-bg: #ECEEEF;
+  --grave-fg: #353C41;
+  --note-bg: #FFFDF7;
+  --note-fg: #1E6A8D;
+  --chip: #FFFFFF;
+  --on-fg: #FFFFFF;
+  --body: 'Nunito', 'Trebuchet MS', Arial, sans-serif;
+  --hand: 'Caveat', 'Segoe Print', 'Comic Sans MS', cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E2230; --fg: #CFE4EE; --muted: #A3C3D2; --soft: #4E86A0; --track: #1E3B4A;
+    --grave-bg: #14181B; --grave-fg: #C9CFD3; --note-bg: #F6F2E7; --note-fg: #1E6A8D;
+    --chip: #FFFFFF; --on-fg: #0E2230; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E2230; --fg: #CFE4EE; --muted: #A3C3D2; --soft: #4E86A0; --track: #1E3B4A;
+  --grave-bg: #14181B; --grave-fg: #C9CFD3; --note-bg: #F6F2E7; --note-fg: #1E6A8D;
+  --chip: #FFFFFF; --on-fg: #0E2230; color-scheme: dark;
+}
+
+html { height: 100%; }
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  transition: background-color .8s ease, color .8s ease;
+}
+body.grave { background: var(--grave-bg); color: var(--grave-fg); }
+p, h1 { margin: 0; }
+
+main {
+  margin: auto;
+  width: 100%;
+  max-width: 640px;
+  box-sizing: border-box;
+  padding-block: 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: clip;
+}
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.chip {
+  background: var(--chip);
+  border-radius: 20px;
+  padding: 10px 18px;
+}
+.chip img { display: block; width: min(250px, 62vw); height: auto; }
+
+.btn {
+  font: 800 18px/1 var(--body);
+  min-height: 54px;
+  padding: 0 34px;
+  border-radius: 999px;
+  border: 2px solid var(--fg);
+  background: var(--fg);
+  color: var(--on-fg);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform .15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:focus-visible { outline: 3px solid var(--soft); outline-offset: 4px; }
+.btn-ghost { background: transparent; color: var(--fg); border-color: var(--soft); }
+
+/* Cena 1: convite */
+.eyebrow { font-size: 19px; font-weight: 800; line-height: 1.4; color: var(--muted); max-width: 30ch; text-wrap: balance; }
+.intro-title { font-size: clamp(34px, 9vw, 52px); font-weight: 900; line-height: 1.08; text-wrap: balance; max-width: 14ch; }
+.lead { font-size: 19px; font-weight: 600; line-height: 1.5; color: var(--muted); max-width: 32ch; }
+#s-intro .btn { margin-top: 12px; }
+
+/* Cena 2: o susto */
+#s-scare { gap: 14px; min-height: 60vh; justify-content: center; }
+.line { font-size: clamp(22px, 6.2vw, 32px); font-weight: 800; line-height: 1.3; max-width: 20ch; text-wrap: balance; }
+.no {
+  font-size: clamp(92px, 27vw, 220px);
+  font-weight: 900;
+  line-height: .9;
+  letter-spacing: -.02em;
+  padding-block: 10px;
+  transition: scale .6s ease, opacity .5s ease;
+}
+.phase { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.loader { width: min(320px, 80vw); display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+.bar { height: 12px; border-radius: 999px; background: var(--track); overflow: hidden; }
+.bar-fill { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--fg); transition: width .9s ease; }
+.bar-label { font-size: 16px; font-weight: 700; color: var(--muted); }
+.wait { width: min(220px, 60vw); height: 8px; border-radius: 999px; background: var(--track); overflow: hidden; margin-top: 22px; }
+.wait-fill { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--fg); }
+.wait-fill.go { width: 100%; transition: width 6.2s linear; }
+.slot { display: grid; justify-items: center; align-items: center; margin-top: 10px; }
+.slot > * { grid-area: 1 / 1; }
+.dots { font-size: 48px; font-weight: 900; line-height: 1; }
+.twist { font-family: var(--hand); font-weight: 700; font-size: clamp(36px, 9.5vw, 52px); line-height: 1.05; color: var(--fg); max-width: 16ch; text-wrap: balance; }
+[data-step] { opacity: 0; transition: opacity .8s ease; }
+[data-step].show { opacity: 1; }
+.no.small { scale: .72; }
+.dots.show { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; } }
+
+/* Cena 3: o sim */
+#s-yes { gap: 18px; }
+.sim { font-weight: 900; font-size: clamp(84px, 25vw, 144px); line-height: .95; letter-spacing: -.01em; margin-top: 8px; }
+.headline { font-size: clamp(30px, 8vw, 46px); font-weight: 900; line-height: 1.1; text-wrap: balance; max-width: 16ch; }
+.txt { font-size: clamp(19px, 5vw, 24px); font-weight: 600; line-height: 1.4; }
+.txt strong { font-weight: 900; }
+.note {
+  position: relative;
+  transform: rotate(-2deg);
+  background: var(--note-bg);
+  color: var(--note-fg);
+  border: 2px solid var(--soft);
+  border-radius: 6px;
+  padding: 16px clamp(22px, 7vw, 44px);
+  margin-block: 10px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.tape { position: absolute; top: -12px; width: clamp(48px, 15vw, 70px); height: 22px; background: var(--soft); opacity: .6; }
+.tape.l { left: -12px; transform: rotate(-24deg); }
+.tape.r { right: -12px; transform: rotate(24deg); }
+.note-word { display: block; font-size: clamp(34px, 10.5vw, 72px); font-weight: 900; letter-spacing: .12em; padding-left: .12em; line-height: 1; }
+.date { display: flex; align-items: center; gap: clamp(12px, 4vw, 20px); width: 100%; max-width: 480px; margin-top: 10px; }
+.rule { flex: 1; height: 2px; border-radius: 2px; background: var(--soft); }
+.date-num { font-size: clamp(60px, 17vw, 92px); font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+.date-month { font-size: clamp(15px, 4.4vw, 20px); font-weight: 800; letter-spacing: .16em; text-transform: uppercase; padding-left: .16em; margin-top: 6px; white-space: nowrap; }
+.date-days { font-size: 18px; font-weight: 600; font-style: italic; color: var(--muted); margin-top: 4px; }
+.sign { font-family: var(--hand); font-weight: 600; font-size: clamp(34px, 9vw, 46px); line-height: 1.1; margin-top: 8px; }
+.verse { font-size: 18px; font-weight: 600; font-style: italic; color: var(--muted); }
+.verse span { font-style: normal; font-weight: 800; padding-left: 6px; }
+#again { margin-top: 18px; }
+
+#s-yes:not([hidden]) > * { animation: rise .7s ease both; }
+#s-yes > :nth-child(2) { animation-delay: .1s; }
+#s-yes > :nth-child(3) { animation-delay: .35s; }
+#s-yes > :nth-child(4) { animation-delay: .55s; }
+#s-yes > :nth-child(5) { animation-delay: .7s; }
+#s-yes > :nth-child(6) { animation-delay: .85s; }
+#s-yes > :nth-child(7) { animation-delay: 1s; }
+#s-yes > :nth-child(n+8) { animation-delay: 1.15s; }
+@keyframes rise { from { opacity: 0; translate: 0 16px; } to { opacity: 1; translate: 0 0; } }
+#s-yes > .sim { animation-name: pop; }
+@keyframes pop { 0% { opacity: 0; scale: .6; } 70% { scale: 1.08; } 100% { opacity: 1; scale: 1; } }
+
+#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .btn:hover { transform: none; }
+  .bar-fill { transition: width .9s ease !important; }
+  .wait-fill.go { transition: width 6.2s linear !important; }
+}
+</style>
+
+<main>
+  <section id="s-intro" class="stage">
+    <div class="chip"><img src="logo.png" alt="Missão País FC(NA)UP"></div>
+    <p class="eyebrow">Para a Bolota, para o Jorge e para o Frei Francisco!</p>
+    <h1 class="intro-title">A minha resposta ao vosso pedido</h1>
+    <p class="lead">Pensei bem e já tenho uma resposta.</p>
+    <button id="open" class="btn" type="button">Abrir resposta</button>
+  </section>
+
+  <section id="s-scare" class="stage" hidden aria-live="polite">
+    <div id="phase-a" class="phase">
+      <p class="line" data-step>Agradeço-vos muito o convite.</p>
+      <p class="line" data-step>Fiquei mesmo feliz por terem pensado em mim.</p>
+      <p class="line" data-step>Pensei muito e rezei sobre o assunto.</p>
+      <div class="loader" data-step>
+        <div class="bar" id="bar" role="progressbar" aria-label="A carregar a resposta" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="bar-fill" id="bar-fill"></span></div>
+        <p class="bar-label">A carregar a resposta…</p>
+      </div>
+    </div>
+    <div id="phase-b" class="phase" hidden>
+      <p class="no" data-step>NÃO.</p>
+      <div class="slot">
+        <p class="dots" data-step aria-hidden="true">…</p>
+        <p class="twist" data-step>…realmente não consigo não aceitar este convite!</p>
+      </div>
+      <div class="wait" data-step aria-hidden="true"><span class="wait-fill" id="wait-fill"></span></div>
+    </div>
+  </section>
+
+  <section id="s-yes" class="stage" hidden>
+    <div class="chip"><img src="logo.png" alt="Missão País FC(NA)UP"></div>
+    <p class="sim">Sim!</p>
+    <h1 class="headline">Aceito o vosso pedido de casamento</h1>
+    <p class="txt">e caso-me, de coração inteiro, com a</p>
+    <div class="note"><span class="tape l"></span><span class="tape r"></span><span class="note-word">ORAÇÃO</span></div>
+    <p class="txt">como <strong>Chefe de Oração</strong> da Missão País</p>
+    <div class="date">
+      <span class="rule"></span>
+      <div>
+        <p class="date-num">7 – 14</p>
+        <p class="date-month">Fevereiro 2027</p>
+      </div>
+      <span class="rule"></span>
+    </div>
+    <p class="sign">Com amor, Paulo</p>
+    <p class="verse">«Eis-me aqui, envia-me.»<span>Is 6, 8</span></p>
+    <button id="again" class="btn btn-ghost" type="button">Ver outra vez</button>
+  </section>
+</main>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+(function () {
+  var intro = document.getElementById('s-intro');
+  var scare = document.getElementById('s-scare');
+  var yes = document.getElementById('s-yes');
+  var steps = scare.querySelectorAll('[data-step]');
+  var phaseA = document.getElementById('phase-a');
+  var phaseB = document.getElementById('phase-b');
+  var bar = document.getElementById('bar');
+  var fill = document.getElementById('bar-fill');
+  var waitFill = document.getElementById('wait-fill');
+
+  function setBar(pct, instant) {
+    if (instant) {
+      fill.style.transition = 'none';
+      fill.style.width = pct + '%';
+      void fill.offsetWidth;
+      fill.style.transition = '';
+    } else {
+      fill.style.width = pct + '%';
+    }
+    bar.setAttribute('aria-valuenow', String(pct));
+  }
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timers = [];
+
+  function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+  function show(stage) {
+    [intro, scare, yes].forEach(function (s) { s.hidden = s !== stage; });
+    window.scrollTo(0, 0);
+  }
+
+  function runScare() {
+    clearTimers();
+    steps.forEach(function (s) { s.classList.remove('show', 'small'); });
+    phaseA.hidden = false;
+    phaseB.hidden = true;
+    setBar(0, true);
+    waitFill.classList.remove('go');
+    show(scare);
+    at(300, function () { steps[0].classList.add('show'); });
+    at(2500, function () { steps[1].classList.add('show'); });
+    at(4700, function () { steps[2].classList.add('show'); });
+    at(7200, function () { steps[3].classList.add('show'); });
+    at(7600, function () { setBar(30); });
+    at(8800, function () { setBar(62); });
+    at(10000, function () { setBar(88); });
+    at(11800, function () { setBar(100); });
+    at(12900, function () {
+      phaseA.hidden = true;
+      phaseB.hidden = false;
+      document.body.classList.add('grave');
+      requestAnimationFrame(function () { steps[4].classList.add('show'); });
+    });
+    at(13500, function () { steps[5].classList.add('show'); });
+    at(18500, function () {
+      steps[5].classList.remove('show');
+      steps[6].classList.add('show');
+      steps[4].classList.add('small');
+      steps[7].classList.add('show');
+      requestAnimationFrame(function () { waitFill.classList.add('go'); });
+      document.body.classList.remove('grave');
+    });
+    at(25000, reveal);
+  }
+
+  function reveal() {
+    clearTimers();
+    document.body.classList.remove('grave');
+    show(yes);
+    if (!reduce) burst();
+  }
+
+  document.getElementById('open').addEventListener('click', runScare);
+  document.getElementById('again').addEventListener('click', function () {
+    clearTimers();
+    show(intro);
+    document.getElementById('open').focus({ preventScroll: true });
+  });
+  if (location.hash === '#sim') reveal();
+
+  /* Chuva de corações e cruzes */
+  var canvas = document.getElementById('fx');
+  var ctx = canvas.getContext('2d');
+  var parts = [];
+  var running = false;
+
+  function token(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+  function resize() {
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = innerWidth * dpr;
+    canvas.height = innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function heart(s) {
+    ctx.beginPath();
+    ctx.moveTo(0, s * .35);
+    ctx.bezierCurveTo(-s * .9, -s * .2, -s * .45, -s * .85, 0, -s * .35);
+    ctx.bezierCurveTo(s * .45, -s * .85, s * .9, -s * .2, 0, s * .35);
+    ctx.fill();
+  }
+  function cross(s) {
+    ctx.lineWidth = s * .18;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(0, -s * .5); ctx.lineTo(0, s * .5);
+    ctx.moveTo(-s * .3, -s * .18); ctx.lineTo(s * .3, -s * .18);
+    ctx.stroke();
+  }
+  function burst() {
+    resize();
+    var colors = [token('--fg'), token('--soft'), '#E7A1A8'];
+    parts = [];
+    for (var i = 0; i < 90; i++) {
+      parts.push({
+        x: Math.random() * innerWidth,
+        y: -20 - Math.random() * innerHeight * .8,
+        vx: (Math.random() - .5) * 1.2,
+        vy: 2 + Math.random() * 3,
+        r: Math.random() * Math.PI,
+        vr: (Math.random() - .5) * .06,
+        s: 12 + Math.random() * 14,
+        c: colors[i % colors.length],
+        k: Math.random() < .7 ? 'h' : 'x'
+      });
+    }
+    if (!running) { running = true; requestAnimationFrame(tick); }
+  }
+  function tick() {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    var alive = 0;
+    parts.forEach(function (p) {
+      p.x += p.vx + Math.sin(p.y / 40) * .4;
+      p.y += p.vy;
+      p.r += p.vr;
+      if (p.y < innerHeight + 40) alive++;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.r);
+      ctx.fillStyle = p.c;
+      ctx.strokeStyle = p.c;
+      if (p.k === 'h') heart(p.s); else cross(p.s);
+      ctx.restore();
+    });
+    if (alive > 0) requestAnimationFrame(tick);
+    else { running = false; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+  window.addEventListener('resize', function () { if (running) resize(); });
+})();
+</script>
+
+</body></html>
